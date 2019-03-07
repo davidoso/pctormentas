@@ -1,0 +1,60 @@
+/*
+Clock widget source:
+https://w3layouts.com/flat-style-jquery-clock-widget-responsive-template
+*/
+html, body {
+/* font-family: 'Raleway', sans-serif; */
+  font-size: 100%;
+  background: linear-gradient(to bottom, whitesmoke, #eaeaea);
+  margin: 0;
+  height: 100%;
+}
+
+.title-main {
+  font-size: 2.5em;
+  font-weight: 400;
+}
+
+.title-sec {
+  font-size: 1.5em;
+  font-weight: 300;
+}
+
+.text-black {
+  color: black;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.p-top {
+  padding-top: 1rem;
+}
+
+#img-alarm {
+  height: 50vh;
+}
+
+.my-row {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.my-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #d32f2f;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  color: white;
+  text-align: center;
+}
+
+#lbl-length {
+  margin: 0px !important;
+  padding: 0px !important;
+}
