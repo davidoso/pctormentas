@@ -74,10 +74,14 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> 'sqlite:application/database/StrikeViewDatsa.sqlite',
-	'hostname' => '',
-	'database' => '',
-	'dbdriver' => 'pdo',
+	// 'dsn'	=> 'sqlite:application/database/StrikeViewData.sqlite',
+	// 'hostname' => '',
+	// 'database' => '',
+	// 'dbdriver' => 'pdo',
+	'dsn'	=> '',
+	'hostname' => 'vdbgamA\DBGAMA',
+	'database' => 'SIGEPRO',
+	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),

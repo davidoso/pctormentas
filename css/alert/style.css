@@ -42,12 +42,12 @@ html, body {
   display: flex;
 }
 
-.my-footer {
+#my-footer {
   position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #d32f2f;
+  background-color: white;
   padding-top: 3%;
   padding-bottom: 3%;
   color: white;
