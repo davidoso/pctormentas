@@ -2,13 +2,13 @@
 <html lang="es-MX">
 <head>
     <?php
-        // Concatenate each element of the datetime array to a string, e.g. t = new Date(2000, 1, 1, 10, 20, 0);
+        // Concatenate each element of the datetime array to a string, e.g. t = new Date(2000, 1, 1, 10, 20, 30);
         $start_stopwatch = $stopwatch[0] . ', ' . $stopwatch[1] . ', ' . $stopwatch[2] . ', ' . $stopwatch[3] . ', ' . $stopwatch[4] . ', ' . $stopwatch[5];
         $data = array('start_stopwatch' => $start_stopwatch);
         $this->load->view('alert/head', $data);
     ?>
 </head>
-<body onload="updateAlerta()">
+<body>
     <div class="container">
         <div class="col-sm-12 p-top align-center">
             <h1 class="title-main text-black" id="lbl-alert"><?php echo $alert; ?></h1>

@@ -48,18 +48,20 @@ function updateAlerta() {
 	$.ajax({
 		type: "post",
 		dataType: "json",
+		data: {"id_origin": id_origin},		// Variable set in <head> while PHP loads the page
 		url: "index.php/Strikeview/updateAlerta",
 		success: function(data) {
 			// console.log("Datatype: " + typeof(data)); // Data returned is an object
 			// CHANGE SETTING: Comment these
-			console.log("Last update (browser's time): " + new Date());
-			console.log(data);
-			console.log("------------------------------");
+			// console.log("Last update (browser's time): " + new Date());
+			// console.log(data);
+			// console.log("------------------------------");
 
-			// If the record is the same keep the stopwatch running in the client's browser (Update is not done to avoid a sudden change, e.g. from 01:20:30 to 01:20:50)
-			// The whole page (including the stopwatch time) is only updated when a new alert (i.e. record) is retrieved
+			// If the database record is the same as last call's one, keep the stopwatch running in the client's browser
+			// HTML DOM elements are not updated to avoid a sudden change in the stopwatch time, e.g. from 01:20:33 to 01:20:55
+			// The whole page (including the stopwatch time) is only updated when a new alert (i.e. a record with a different mode_ide) is retrieved every minute
 			if(last_mode_id != data.mode_id) {
-				// e.g. t = new Date(2000, 1, 1, 10, 20, 0);
+				// e.g. t = new Date(2000, 1, 1, 10, 20, 30);
 				t = new Date(data.stopwatch[0], data.stopwatch[1], data.stopwatch[2], data.stopwatch[3], data.stopwatch[4], data.stopwatch[5]);
 				$('#lbl-alert').html(data.alert);
 				$('#lbl-description').html(data.description);
@@ -83,8 +85,7 @@ function updateAlerta() {
 }
 
 $(document).ready(function() {
-	// onload event attribute in <body> is used instead because it seems to be faster to call the webservice and update the page elements
-	// updateAlerta();
+	updateAlerta();		// Call the webservice and update the HTML DOM as soon as the page loads (onload event attribute in <body> could be used too)
 
 	setInterval(function() {
 		updateAlerta();

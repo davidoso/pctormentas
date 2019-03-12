@@ -1,13 +1,12 @@
 <?php
 class Strikeview_m extends CI_Model {
 
-	public function getAlerta()
+	public function getAlerta($id_origin)
 	{
 		$select =
-			"SELECT TOP(1) mode_id, mode, _start AS 'start_time', CONVERT(VARCHAR(8), _start, 3) + ' a las ' + CONVERT(VARCHAR(5), _start, 8) AS 'format_start_time', DATEDIFF(minute, _start, GETDATE()) AS 'current_minute_diff'
+			"SELECT TOP(1) mode_id, mode, _start AS 'start_time', CONVERT(VARCHAR(8), _start, 3) + ' a las ' + CONVERT(VARCHAR(5), _start, 8) AS 'format_start_time', DATEDIFF(second, _start, GETDATE()) AS 'current_second_diff'
 			FROM zstrikeview.t_mode
-			WHERE _stop IS NULL
-			ORDER BY mode_id DESC";
+			WHERE _stop IS NULL AND id_origin = $id_origin ORDER BY mode_id DESC";
 
 		$query = $this->db->query($select);
 		return $query->row_array();

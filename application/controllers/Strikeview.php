@@ -19,23 +19,24 @@ class Strikeview extends CI_Controller {
 	// Funciones que cargan la vista de alerta según la imagen de la ubicación seleccionada
 	public function mina()
 	{
-		$this->loadAlerta();			// Mina se considera como 1
+		$this->loadAlerta(1);			// Mina tiene id_origin 1
 	}
 
 	public function peletizadora()
 	{
-		$this->loadAlerta();			// Peletizadora se considera como 2
+		$this->loadAlerta(2);			// Peletizadora tiene id_origin 2
 	}
 
 	public function presas()
 	{
-		$this->loadAlerta();			// Presas se considera como 3
+		$this->loadAlerta(3);			// Presas tiene id_origin 3
 	}
 
 	// Cargar por primera vez la vista de alerta
-	private function loadAlerta()
+	private function loadAlerta($id_origin)
 	{
-		$data = $this->getAlerta();
+		$data = $this->getAlerta($id_origin);
+		$data['id_origin'] = $id_origin;
 		$this->load->view('alert/alert', $data);
 	}
 
@@ -46,15 +47,16 @@ class Strikeview extends CI_Controller {
 		if($this->input->server('REQUEST_METHOD') != 'POST') {
 			redirect('Strikeview', 'refresh');
 		}
-		$data = $this->getAlerta();
+        $id_origin = $this->input->post('id_origin');
+		$data = $this->getAlerta($id_origin);
 		echo json_encode($data);
 	}
 
 	// FIXME: ¿?
 	// Llamar webservice ¿? mediante PDO con determinado $serverName, $uid, $pwd según la ubicación de la base de datos del Strike View
-	private function getAlerta(/*$from*/)
+	private function getAlerta($id_origin)
 	{
-		$result = $this->svm->getAlerta();
+		$result = $this->svm->getAlerta($id_origin);
 
 		if(empty($result)) {
 			$status = 0;
@@ -69,10 +71,15 @@ class Strikeview extends CI_Controller {
 			$alert_exists = true;
 			$start = 'Inicio: ' . $result['format_start_time'];
 			$mode_id = $result['mode_id'];
+			// Beta version
 			// Default datetime to start stopwatch (Time starts at ??:??:00 depending on the time difference between start time and time when the query was executed)
-			$hours = intdiv($result['current_minute_diff'], 60);
-			$minutes = $result['current_minute_diff'] % 60;
-			$stopwatch = [date('Y'), date('n'), date('j'), $hours, $minutes, 0];
+			// $hours = intdiv($result['current_minute_diff'], 60);
+			// $minutes = $result['current_minute_diff'] % 60;
+			$time = gmdate("H:i:s", $result['current_second_diff']);	// gmdate() displays a formatted GMT/UTC datetime, e.g. 06:06:06
+			$h = substr($time, 0, 2);
+			$m = substr($time, 3, 2);
+			$s = substr($time, 6, 2);
+			$stopwatch = [date('Y'), date('n'), date('j'), $h, $m, $s];
 		}
 
 		switch($status) {
