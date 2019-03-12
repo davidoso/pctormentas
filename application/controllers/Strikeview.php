@@ -10,7 +10,7 @@ class Strikeview extends CI_Controller {
 		$this->load->model('strikeview_m', 'svm');
 	}
 
-	// Mostrar página inicial/home con menú para seleccionar ubicación del sistema de alerta
+	// Mostrar página inicial/home con menú para después seleccionar ubicación del sistema de alerta
 	public function index()
 	{
 		$this->load->view('home/home');
@@ -32,18 +32,25 @@ class Strikeview extends CI_Controller {
 		$this->loadAlerta();			// Presas se considera como 3
 	}
 
+	// Cargar por primera vez la vista de alerta
 	private function loadAlerta()
 	{
 		$data = $this->getAlerta();
 		$this->load->view('alert/alert', $data);
 	}
 
+	// Actualizar cada minuto mediante petición AJAX desde flipclock.js
 	public function updateAlerta()
 	{
+		// Bloquear acceso directo a la función o mediante URL en el navegador
+		if($this->input->server('REQUEST_METHOD') != 'POST') {
+			redirect('Strikeview', 'refresh');
+		}
 		$data = $this->getAlerta();
 		echo json_encode($data);
 	}
 
+	// FIXME: ¿?
 	// Llamar webservice ¿? mediante PDO con determinado $serverName, $uid, $pwd según la ubicación de la base de datos del Strike View
 	private function getAlerta(/*$from*/)
 	{
@@ -53,11 +60,19 @@ class Strikeview extends CI_Controller {
 			$status = 0;
 			$alert_exists = false;
 			$start = '';
+			$mode_id = -1;
+			// Default datetime to start stopwatch (Time starts at 00:00:00. Today's date is preferred but it could be any date since my-footer div will be hidden)
+			$stopwatch = [date('Y'), date('n'), date('j'), 0, 0, 0];
 		}
 		else {
 			$status = $result['mode'];
 			$alert_exists = true;
 			$start = 'Inicio: ' . $result['format_start_time'];
+			$mode_id = $result['mode_id'];
+			// Default datetime to start stopwatch (Time starts at ??:??:00 depending on the time difference between start time and time when the query was executed)
+			$hours = intdiv($result['current_minute_diff'], 60);
+			$minutes = $result['current_minute_diff'] % 60;
+			$stopwatch = [date('Y'), date('n'), date('j'), $hours, $minutes, 0];
 		}
 
 		switch($status) {
@@ -86,15 +101,22 @@ class Strikeview extends CI_Controller {
 				$color = '#fdc52f';		// Amarillo pantone (Peña Colorada)
 				break;
 			default:					// Validar en caso el modo no esté en el rango [1-3]
+				$alert_exists = false;	// Restore empty($result) value if the query was not indeed empty
+				$start = '';			// Restore empty($result) value if the query was not indeed empty
+				$mode_id = -1;			// Restore empty($result) value if the query was not indeed empty
 				$alert = 'No se pudo consultar la base de datos';
 				$description = 'Intente de nuevo más tarde. Si el error persiste, contacte a TI';
+				$imagepath = 'images/alarm-no.png';
+				$color = '#929395';		// Gris pantone (Peña Colorada)
 		}
-		$data['alert'] = $alert;
 		$data['alert_exists'] = $alert_exists;
-		$data['description'] = $description;
 		$data['start'] = $start;
+		$data['mode_id'] = $mode_id;
+		$data['alert'] = $alert;
+		$data['description'] = $description;
 		$data['imagepath'] = $imagepath;
 		$data['color'] = $color;
+		$data['stopwatch'] = $stopwatch;
 
 		return $data;
 	}

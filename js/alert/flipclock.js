@@ -1,4 +1,5 @@
-var t;
+var display;
+var last_mode_id = -1;
 
 function flipTo(digit, n) {
 	var current = digit.attr('data-num');
@@ -42,19 +43,24 @@ function setTime(flip) {
 	updateGroup('sec', t.getSeconds(), flip);
 }
 
-$(document).ready(function() {
-	t = new Date(2018, 11, 24, 23, 59, 50);
+function updateAlerta() {
+	$('body').css('cursor', 'wait');
+	$.ajax({
+		type: "post",
+		dataType: "json",
+		url: "index.php/Strikeview/updateAlerta",
+		success: function(data) {
+			// console.log("Datatype: " + typeof(data)); // Data returned is an object
+			// CHANGE SETTING: Comment these
+			console.log("Last update (browser's time): " + new Date());
+			console.log(data);
+			console.log("------------------------------");
 
-	setInterval(function() {
-		$('body').css('cursor', 'wait');
-		console.log(Math.random());
-
-		$.ajax({
-			type: "get",
-			dataType: "json",
-			url: "index.php/Strikeview/updateAlerta",
-			success: function(data) {
-				console.log(typeof(data));
+			// If the record is the same keep the stopwatch running in the client's browser (Update is not done to avoid a sudden change, e.g. from 01:20:30 to 01:20:50)
+			// The whole page (including the stopwatch time) is only updated when a new alert (i.e. record) is retrieved
+			if(last_mode_id != data.mode_id) {
+				// e.g. t = new Date(2000, 1, 1, 10, 20, 0);
+				t = new Date(data.stopwatch[0], data.stopwatch[1], data.stopwatch[2], data.stopwatch[3], data.stopwatch[4], data.stopwatch[5]);
 				$('#lbl-alert').html(data.alert);
 				$('#lbl-description').html(data.description);
 				$('#lbl-start').html(data.start);
@@ -62,25 +68,31 @@ $(document).ready(function() {
 				$('#img-alarm').attr("alt", data.alert);
 				$('#img-alarm').attr("title", data.alert);
 				$('#my-footer').css("background-color", data.color);
-				console.log(data);
-				$('body').css('cursor', 'auto');
-
-			},
-			error: function() {
-				console.log("Error! switchSelectCapa() failed. Search columns could not be retrieved");
-				$('body').css('cursor', 'auto');
 			}
-		}); // AJAX
-		// AJAX CON WEBSERVICE O LLAMADA A MODELO
-	}, 5000);		// Call webservice every minute
 
+			last_mode_id = data.mode_id;
+			display = data.alert_exists ? "block" : "none";
+			$('#my-footer').css("display", display);
+			$('body').css('cursor', 'auto');
+		},		// AJAX success
+		error: function() {
+			console.log("¡Error! No se pudo consultar la base de datos");
+			$('body').css('cursor', 'auto');
+		}		// AJAX error
+	});			// AJAX
+}
+
+$(document).ready(function() {
+	// onload event attribute in <body> is used instead because it seems to be faster to call the webservice and update the page elements
+	// updateAlerta();
+
+	setInterval(function() {
+		updateAlerta();
+	}, 60000);			// Call webservice every minute
 
 	setTime(false);
+
 	setInterval(function() {
 		setTime(true);
-	}, 1000);		// Update flipclock every second
-	setInterval(function() {
-		console.log(Math.random());
-		// AJAX CON WEBSERVICE O LLAMADA A MODELO
-	}, 60000);		// Call webservice every minute
+	}, 1000);			// Update flipclock every second
 });

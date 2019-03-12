@@ -4,16 +4,13 @@ class Strikeview_m extends CI_Model {
 	public function getAlerta()
 	{
 		$select =
-			"SELECT TOP(1) mode_id, mode, _start AS 'start_time', CONVERT(VARCHAR(8), _start, 3) + ' a las ' + CONVERT(VARCHAR(5), _start, 8) AS 'format_start_time'
+			"SELECT TOP(1) mode_id, mode, _start AS 'start_time', CONVERT(VARCHAR(8), _start, 3) + ' a las ' + CONVERT(VARCHAR(5), _start, 8) AS 'format_start_time', DATEDIFF(minute, _start, GETDATE()) AS 'current_minute_diff'
 			FROM zstrikeview.t_mode
 			WHERE _stop IS NULL
 			ORDER BY mode_id DESC";
 
 		$query = $this->db->query($select);
-		// $query = $this->db->get('zstrikeview.t_mode');
-		// $query = $this->db->get_compiled_select();
-        // return $query;
-        return $query->row_array();
+		return $query->row_array();
 
 		// Post fields required by BUSCAMW webservice
 		/*$userid = $this->session->userdata('userid');

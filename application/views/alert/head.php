@@ -16,3 +16,5 @@
 <!-- Custom JavaScript for this project -->
     <script type="text/javascript" src="js/alert/flipclock.js"></script>
 <!--===============================================================================================-->
+<!-- Default datetime to start stopwatch -->
+    <?php echo "<script> var t = new Date(". $start_stopwatch . "); </script>"; ?>
