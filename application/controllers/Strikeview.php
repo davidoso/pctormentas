@@ -22,7 +22,7 @@ class Strikeview extends CI_Controller {
 		$this->loadAlerta(1);			// Mina tiene id_origin 1
 	}
 
-	public function peletizadora()
+	public function pelet()
 	{
 		$this->loadAlerta(2);			// Peletizadora tiene id_origin 2
 	}
@@ -107,7 +107,9 @@ class Strikeview extends CI_Controller {
 				$imagepath = 'images/alarm-3-yellow.png';
 				$color = '#fdc52f';		// Amarillo pantone (Peña Colorada)
 				break;
-			default:					// Validar en caso el modo no esté en el rango [1-3]
+			// Validar en caso de que el modo no esté en el rango [1-3]
+			// Estos valores aparecen también en la función de error de la llamada AJAX desde flipclock.js en caso el servidor de BD no sea accesible
+			default:
 				$alert_exists = false;	// Restore empty($result) value if the query was not indeed empty
 				$start = '';			// Restore empty($result) value if the query was not indeed empty
 				$mode_id = -1;			// Restore empty($result) value if the query was not indeed empty

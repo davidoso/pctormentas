@@ -61,7 +61,7 @@ function updateAlerta() {
 			// HTML DOM elements are not updated to avoid a sudden change in the stopwatch time, e.g. from 01:20:33 to 01:20:55
 			// The whole page (including the stopwatch time) is only updated when a new alert (i.e. a record with a different mode_ide) is retrieved every minute
 			if(last_mode_id != data.mode_id) {
-				// e.g. t = new Date(2000, 1, 1, 10, 20, 30);
+				// e.g. t = new Date(year, month, day, hour, minute, second);
 				t = new Date(data.stopwatch[0], data.stopwatch[1], data.stopwatch[2], data.stopwatch[3], data.stopwatch[4], data.stopwatch[5]);
 				$('#lbl-alert').html(data.alert);
 				$('#lbl-description').html(data.description);
@@ -76,11 +76,21 @@ function updateAlerta() {
 			display = data.alert_exists ? "block" : "none";
 			$('#my-footer').css("display", display);
 			$('body').css('cursor', 'auto');
-		},		// AJAX success
+		},		// AJAX success function
 		error: function() {
 			console.log("¡Error! No se pudo consultar la base de datos");
+
+			t = new Date();
+			$('#lbl-alert').html("No se pudo consultar la base de datos");
+			$('#lbl-description').html("Intente de nuevo más tarde. Si el error persiste, contacte a TI");
+			$('#lbl-start').html("");
+			$('#img-alarm').attr("src", "images/alarm-no.png");
+			$('#img-alarm').attr("alt", "No se pudo consultar la base de datos");
+			$('#img-alarm').attr("title", "No se pudo consultar la base de datos");
+			$('#my-footer').css("background-color", "#929395");
+			$('#my-footer').css("display", "none");
 			$('body').css('cursor', 'auto');
-		}		// AJAX error
+		}		// AJAX error function
 	});			// AJAX
 }
 

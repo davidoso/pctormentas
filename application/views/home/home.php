@@ -20,8 +20,8 @@
                 </a>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <a class="thumbnail darken" href="index.php/Strikeview/peletizadora/" onmouseover="over('peletizadora')" onmouseout="out('peletizadora')">
-                    <img class="img-responsive op" src="images/op-peletizadora.jpg" width="100%;" alt="Peletizadora">
+                <a class="thumbnail darken" href="index.php/Strikeview/pelet/" onmouseover="over('peletizadora')" onmouseout="out('peletizadora')">
+                    <img class="img-responsive op" src="images/op-pelet.jpg" width="100%;" alt="Peletizadora">
                     <div id="peletizadora" class="text-centered">Peletizadora</div>
                 </a>
             </div>
