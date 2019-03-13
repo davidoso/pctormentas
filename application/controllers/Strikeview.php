@@ -19,24 +19,24 @@ class Strikeview extends CI_Controller {
 	// Funciones que cargan la vista de alerta según la imagen de la ubicación seleccionada
 	public function mina()
 	{
-		$this->loadAlerta(1);			// Mina tiene id_origin 1
+		$this->loadAlerta('Mina');
 	}
 
 	public function pelet()
 	{
-		$this->loadAlerta(2);			// Peletizadora tiene id_origin 2
+		$this->loadAlerta('Peletizadora');
 	}
 
 	public function presas()
 	{
-		$this->loadAlerta(3);			// Presas tiene id_origin 3
+		$this->loadAlerta('Presas');
 	}
 
 	// Cargar por primera vez la vista de alerta
-	private function loadAlerta($id_origin)
+	private function loadAlerta($origin)
 	{
-		$data = $this->getAlerta($id_origin);
-		$data['id_origin'] = $id_origin;
+		$data = $this->getAlerta($origin);
+		$data['origin'] = $origin;
 		$this->load->view('alert/alert', $data);
 	}
 
@@ -47,24 +47,26 @@ class Strikeview extends CI_Controller {
 		if($this->input->server('REQUEST_METHOD') != 'POST') {
 			redirect('Strikeview', 'refresh');
 		}
-        $id_origin = $this->input->post('id_origin');
-		$data = $this->getAlerta($id_origin);
+        $origin = $this->input->post('origin');
+		$data = $this->getAlerta($origin);
 		echo json_encode($data);
 	}
 
+	// NOTE: DELETE THIS COMMENT
 	// FIXME: ¿?
 	// Llamar webservice ¿? mediante PDO con determinado $serverName, $uid, $pwd según la ubicación de la base de datos del Strike View
-	private function getAlerta($id_origin)
+	private function getAlerta($origin)
 	{
-		$result = $this->svm->getAlerta($id_origin);
+		$result = $this->svm->getAlerta($origin);
 
 		if(empty($result)) {
 			$status = 0;
 			$alert_exists = false;
 			$start = '';
-			$mode_id = -1;
+			$mode_id = -2;				// El valor -2 valida el caso cuando no hay alerta
 			// Default datetime to start stopwatch (Time starts at 00:00:00. Today's date is preferred but it could be any date since my-footer div will be hidden)
 			$stopwatch = [date('Y'), date('n'), date('j'), 0, 0, 0];
+			$last_alert = $this->svm->getLastAlert($origin);
 		}
 		else {
 			$status = $result['mode'];
@@ -85,7 +87,7 @@ class Strikeview extends CI_Controller {
 		switch($status) {
 			case 0:
 				$alert = 'No hay alerta';
-				$description = 'Última alerta detectada: ¿?';
+				$description = 'Última alerta detectada: ' . $last_alert;
 				$imagepath = 'images/alarm-no.png';
 				$color = '#929395';		// Gris pantone (Peña Colorada)
 				break;
@@ -107,12 +109,12 @@ class Strikeview extends CI_Controller {
 				$imagepath = 'images/alarm-3-yellow.png';
 				$color = '#fdc52f';		// Amarillo pantone (Peña Colorada)
 				break;
-			// Validar en caso de que el modo no esté en el rango [1-3]
-			// Estos valores aparecen también en la función de error de la llamada AJAX desde flipclock.js en caso el servidor de BD no sea accesible
+			/* El valor -1 valida el caso de que el modo no esté en el rango de alertas [1-3]. Estos valores aparecen también en la función de error de la llamada AJAX
+			desde flipclock.js en caso el servidor de BD se caiga mientras un navegador tenga abierta la página */
 			default:
-				$alert_exists = false;	// Restore empty($result) value if the query was not indeed empty
-				$start = '';			// Restore empty($result) value if the query was not indeed empty
-				$mode_id = -1;			// Restore empty($result) value if the query was not indeed empty
+				$alert_exists = false;
+				$start = '';
+				$mode_id = -1;
 				$alert = 'No se pudo consultar la base de datos';
 				$description = 'Intente de nuevo más tarde. Si el error persiste, contacte a TI';
 				$imagepath = 'images/alarm-no.png';

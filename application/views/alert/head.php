@@ -15,10 +15,10 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <!-- Custom JavaScript for this project -->
     <script type="text/javascript" src="js/alert/flipclock.js"></script>
-<!-- Custom JavaScript variables: Default datetime to start stopwatch and origin (1, 2, 3) -->
+<!-- Custom JavaScript variables: Default datetime to start stopwatch and origin (Mina, Peletizadora, Presas) -->
     <?php
         echo "<script>";
         echo "var t = new Date(". $start_stopwatch . "); ";
-        echo "var id_origin = " . $id_origin . "; ";
+        echo "var origin = '" . $origin . "'; ";
         echo "</script>";
     ?>

@@ -1,5 +1,9 @@
+/* Almacena "block" o "none" cuando la llamada AJAX retorne sin errores cada minuto para mostrar u ocultar my-footer div
+Esto controla los casos cuando en un minuto determinado no haya alerta y al siguiente aparezca o viceversa */
 var display;
-var last_mode_id = -1;
+/* Valor default para comparar registro obtenido al cargar la página con el anterior y cada minuto mediante la llamada AJAX
+Si es diferente actualiza los elementos. Los valores -2 y -1 corresponden cuando no hay alerta o no esté en el rango [1-3] */
+var last_mode_id = 0;
 
 function flipTo(digit, n) {
 	var current = digit.attr('data-num');
@@ -48,13 +52,13 @@ function updateAlerta() {
 	$.ajax({
 		type: "post",
 		dataType: "json",
-		data: {"id_origin": id_origin},		// Variable set in <head> while PHP loads the page
+		data: {"origin": origin},		// Variable set in <head> while PHP loads the page
 		url: "index.php/Strikeview/updateAlerta",
 		success: function(data) {
 			// console.log("Datatype: " + typeof(data)); // Data returned is an object
 			// CHANGE SETTING: Comment these
-			// console.log("Last update (browser's time): " + new Date());
-			// console.log(data);
+			console.log("Last update (browser's time): " + new Date());
+			console.log(data);
 			// console.log("------------------------------");
 
 			// If the database record is the same as last call's one, keep the stopwatch running in the client's browser
@@ -79,7 +83,7 @@ function updateAlerta() {
 		},		// AJAX success function
 		error: function() {
 			console.log("¡Error! No se pudo consultar la base de datos");
-
+			last_mode_id = 0;
 			t = new Date();
 			$('#lbl-alert').html("No se pudo consultar la base de datos");
 			$('#lbl-description').html("Intente de nuevo más tarde. Si el error persiste, contacte a TI");

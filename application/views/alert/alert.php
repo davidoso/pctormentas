@@ -25,7 +25,7 @@
         <?php
             // Show or hide my-footer div that displays stopwatch
             $display = ($alert_exists ? 'block' : 'none');
-            $data = array('display' => $display, 'color' => $color);
+            $data = array('display' => $display, 'color' => $color, 'origin' => $origin);
             $this->load->view('alert/flipclock', $data);
         ?>
     </div>

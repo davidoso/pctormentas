@@ -169,7 +169,7 @@ https://codepen.io/blucube/pen/pgqRKr
   perspective: 100vw;
   -webkit-perspective-origin: 50% 50%;
   perspective-origin: 50% 50%;
-  padding-left: 5vw;
+  padding-left: 4vw;
 }
 .flipclock .digit {
   margin-right: 1vw;
