@@ -67,6 +67,8 @@ class Strikeview extends CI_Controller {
 			// Default datetime to start stopwatch (Time starts at 00:00:00. Today's date is preferred but it could be any date since my-footer div will be hidden)
 			$stopwatch = [date('Y'), date('n'), date('j'), 0, 0, 0];
 			$last_alert = $this->svm->getLastAlert($origin);
+			if($last_alert == '')
+				$last_alert = '(No hay datos disponibles)';
 		}
 		else {
 			$status = $result['mode'];

@@ -36,7 +36,7 @@ body, html {
 }
 
 .app-title {
-  color: #fff;
+  color: white;
   font-size: 50px;
   font-weight: 500;
   margin-top: 0.4rem;
@@ -66,7 +66,7 @@ body, html {
 
 .op {
   border-radius: 12px;
-  border: 2px solid #4f738a;
+  border: 2px solid white;
 }
 
 a.darken {
