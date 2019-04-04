@@ -50,7 +50,12 @@ body, html {
   margin: 20px 20px 0 20px;
 }
 
+#pc-navbar {
+  margin-bottom: 15px;
+}
+
 .container1 {
+  background: #929395;
   height: 20%;
   display: flex;
   justify-content: center;

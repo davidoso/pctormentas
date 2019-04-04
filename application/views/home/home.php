@@ -4,11 +4,13 @@
     <?php $this->load->view('home/head'); ?>
 </head>
 <body class="bg">
-    <div class="container1">
-        <div class="row justify-content-center">
-            <p class="app-img"><img class="img-responsive" src="images/logo_peco.png"></p>
-            <div class="vl"></div>
-            <p class="app-title">ALERTA DE TORMENTAS</p>
+    <div id="pc-navbar">
+        <div class="container1">
+            <div class="row justify-content-center">
+                <p class="app-img"><img class="img-responsive" src="images/logo_peco.png"></p>
+                <div class="vl"></div>
+                <p class="app-title">ALERTA DE TORMENTAS</p>
+            </div>
         </div>
     </div>
     <div class="container2">

@@ -99,7 +99,7 @@ function updateAlerta() {
 }
 
 $(document).ready(function() {
-	updateAlerta();		// Call the webservice and update the HTML DOM as soon as the page loads (onload event attribute in <body> could be used too)
+	updateAlerta();		// Call webservice and update the HTML DOM as soon as the page loads (onload event attribute in <body> could be used too)
 
 	setInterval(function() {
 		updateAlerta();
