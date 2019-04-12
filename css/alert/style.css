@@ -5,7 +5,8 @@ https://w3layouts.com/flat-style-jquery-clock-widget-responsive-template
 html, body {
 /* font-family: 'Raleway', sans-serif; */
   font-size: 100%;
-  background: linear-gradient(to bottom, whitesmoke, #eaeaea);
+  /*background: linear-gradient(to bottom, whitesmoke, #eaeaea);*/
+  background: linear-gradient(to bottom, #fff, #fff);
   margin: 0;
   height: 100%;
 }
