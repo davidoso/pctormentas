@@ -33,13 +33,15 @@ body, html {
 
 .app-img {
   float: left;
+  margin-bottom: 0;
 }
 
 .app-title {
   color: white;
   font-size: 50px;
   font-weight: 500;
-  margin-top: 1rem;
+  margin-top: 0.55rem;
+  margin-bottom: 0;
   text-transform: uppercase;
 }
 
@@ -47,7 +49,7 @@ body, html {
   border-left: 6px solid #ffc107;
   border-radius: 10px;
   height: 50px;
-  margin: 30px 20px 0 20px;
+  margin: 1.5rem 1.5rem 0 1.5rem;
 }
 
 #pc-navbar {
@@ -102,4 +104,10 @@ a.darken:hover .text-centered {
   top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+@media all and (max-width: 800px) {
+  .app-title {
+    font-size: 20px;
+  }
 }
