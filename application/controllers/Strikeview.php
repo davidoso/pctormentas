@@ -52,8 +52,6 @@ class Strikeview extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	// NOTE: DELETE THIS COMMENT
-	// FIXME: ¿?
 	// Llamar webservice ¿? mediante PDO con determinado $serverName, $uid, $pwd según la ubicación de la base de datos del Strike View
 	private function getAlerta($origin)
 	{
